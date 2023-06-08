@@ -176,8 +176,6 @@ Write-Host "Creating the following GitHub repository secrets..."
 Write-Host "AZURE_CLIENT_ID: '$appRegId'"
 Write-Host "AZURE_SUBSCRIPTION_ID: '$subscriptionId'"
 Write-Host "AZURE_TENANT_ID: '$tenantId'"
-Write-Host "AZURE_PRINCIPAL_ID: '$servicePrincipalId'"
-Write-Host "AZURE_SIGNED_IN_USER_ID: '$signedInUserId'"
 Write-Host "AZURE_RESOURCE_GROUP_NAME: '$resourceGroupName'"
 
 Write-Host "Logging into GitHub CLI..."
@@ -186,6 +184,4 @@ gh auth login
 gh secret set AZURE_CLIENT_ID -b $appRegId --repo $repositoryName
 gh secret set AZURE_SUBSCRIPTION_ID -b $subscriptionId --repo $repositoryName
 gh secret set AZURE_TENANT_ID -b $tenantId --repo $repositoryName
-gh secret set AZURE_PRINCIPAL_ID -b $servicePrincipalId --repo $repositoryName
-gh secret set AZURE_SIGNED_IN_USER_ID -b $signedInUserId --repo $repositoryName
 gh secret set AZURE_RESOURCE_GROUP_NAME -b $resourceGroupName --repo $repositoryName
