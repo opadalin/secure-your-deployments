@@ -42,6 +42,7 @@ if ($userRoleDefinitionNames.Contains("Owner") -eq $false) {
 Write-Host "Assigned roles for $userDisplayName"
 az role assignment list --all --assignee $userPrincipalName --output json --query '[].{principalName:principalName, principalId:principalId, roleDefinitionName:roleDefinitionName, scope:scope}'
 
+Read-Host -Prompt "Press any key to continue..."
 Write-Host "--------------------------------------------------------------------------------------"
 Write-Host "|  Configuring settings for the OpenID Connect integration between GitHub and Azure  |"
 Write-Host "--------------------------------------------------------------------------------------"
@@ -98,6 +99,7 @@ else {
     az group wait --created --resource-group $resourceGroupName # Waiting for the resource group to be created   
 }
 
+Read-Host -Prompt "Press any key to continue..."
 # Configuring user-assigned Managed Identity with federated credentials
 ##############################################################################################################################################################################################################################################
 Write-Host "------------------------------------------------"
@@ -108,9 +110,10 @@ $userAssignedManagedIdentityClientId = az identity create --name $userAssignedMa
 $userAssignedManagedIdentityPrincipalId = az identity show --name $userAssignedManagedIdentityName --resource-group $resourceGroupName --query principalId -o tsv
 az identity show --name $userAssignedManagedIdentityName --resource-group $resourceGroupName
 
-Write-Host "------------------------------------------------------------------------------"
-Write-Host "|  Configuring federated credentials for '$userAssignedManagedIdentityName'  |"
-Write-Host "------------------------------------------------------------------------------"
+Read-Host -Prompt "Press any key to continue..."
+Write-Host "--------------------------------------------------------------------------"
+Write-Host "|  Configuring federated credentials for user-assigned Managed Identity  |"
+Write-Host "--------------------------------------------------------------------------"
 $audience = "api://AzureADTokenExchange"
 $issuer = "https://token.actions.githubusercontent.com"
 
@@ -124,6 +127,7 @@ $userAssignedIdentityPrincipalId = az identity show --name $userAssignedManagedI
 Write-Host "Assigning Owner role for user-assigned Managed Identity on resource group level:"
 az role assignment create --role Owner --subscription $subscriptionId --assignee-object-id $userAssignedIdentityPrincipalId --assignee-principal-type ServicePrincipal --scope /subscriptions/$subscriptionId/resourceGroups/$resourceGroupName
 
+Read-Host -Prompt "Press any key to continue..."
 # Setting GitHub repository secrets
 ##############################################################################################################################################################################################################################################
 Write-Host "---------------------------------------"

@@ -42,6 +42,7 @@ if ($userRoleDefinitionNames.Contains("Owner") -eq $false) {
 Write-Host "Assigned roles for $userDisplayName"
 az role assignment list --all --assignee $userPrincipalName --output json --query '[].{principalName:principalName, principalId:principalId, roleDefinitionName:roleDefinitionName, scope:scope}'
 
+Read-Host -Prompt "Press any key to continue..."
 Write-Host "--------------------------------------------------------------------------------------"
 Write-Host "|  Configuring settings for the OpenID Connect integration between GitHub and Azure  |"
 Write-Host "--------------------------------------------------------------------------------------"
@@ -98,6 +99,7 @@ else {
     az group wait --created --resource-group $resourceGroupName # Waiting for the resource group to be created   
 }
 
+Read-Host -Prompt "Press any key to continue..."
 # Configuring app-registration in Azure Active Directory
 ##############################################################################################################################################################################################################################################
 Write-Host "------------------------------------------------------------"
@@ -117,6 +119,7 @@ else {
 }
 Write-Host "App-registration id: $appRegId"
 
+Read-Host -Prompt "Press any key to continue..."
 # Configuring Service Principal
 ##############################################################################################################################################################################################################################################
 Write-Host "------------------------------------------------------------"
@@ -142,13 +145,14 @@ az ad sp show --id $appRegId --query "{ DisplayName:displayName, ObjectID:id, Ap
 Write-Host "Service Principal id: $servicePrincipalId"
 
 Write-Host "Assigned roles for Service Principal $($appRegName):"
-az role assignment list --all --assignee $servicePrincipalId --output json --query '[].{principalName:principalName, principalId:principalId, roleDefinitionName:roleDefinitionName, scope:scope}'
+az role assignment list --all --assignee $servicePrincipalId --output json --query '[].{principalId:principalId, roleDefinitionName:roleDefinitionName, scope:scope}'
 
+Read-Host -Prompt "Press any key to continue..."
 # Configuring federated credentials
 ##############################################################################################################################################################################################################################################
-Write-Host "---------------------------------------------------------"
-Write-Host "|  Configuring federated credentials for '$appRegName'  |"
-Write-Host "---------------------------------------------------------"
+Write-Host "-------------------------------------------------------------"
+Write-Host "|  Configuring federated credentials for Service Principal  |"
+Write-Host "-------------------------------------------------------------"
 $mainficJson = Get-Content ./mainfic.jsonc -Raw | ConvertFrom-Json
 $mainficJson.subject = "repo:$($repositoryName):ref:refs/heads/main"
 $mainficJson | ConvertTo-Json -Depth 1 | Out-File ./mainfic.jsonc
@@ -162,6 +166,7 @@ az ad app federated-credential create --id $appRegId --parameters ./mainfic.json
 Write-Host "Creating Federated Identity Credentials for pull requests:"
 az ad app federated-credential create --id $appRegId --parameters ./prfic.jsonc
 
+Read-Host -Prompt "Press any key to continue..."
 # Setting GitHub repository secrets
 ##############################################################################################################################################################################################################################################
 Write-Host "---------------------------------------"

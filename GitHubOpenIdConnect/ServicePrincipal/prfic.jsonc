@@ -1,7 +1,7 @@
 {
   "name": "prfic",
   "issuer": "https://token.actions.githubusercontent.com",
-  "subject": "repo:opadalin/amp-23:pull_request",
+  "subject": "repo:opadalin/secure-your-deployments:pull_request",
   "description": "Federated identity credentials for pull requests",
   "audiences": [
     "api://AzureADTokenExchange"
