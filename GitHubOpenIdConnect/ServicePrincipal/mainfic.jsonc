@@ -1,0 +1,9 @@
+{
+  "name": "mainfic",
+  "issuer": "https://token.actions.githubusercontent.com",
+  "subject": "repo:opadalin/amp-23:ref:refs/heads/main",
+  "description": "Federated identity credentials for main branch",
+  "audiences": [
+    "api://AzureADTokenExchange"
+  ]
+}

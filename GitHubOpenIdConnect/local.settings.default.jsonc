@@ -1,0 +1,16 @@
+{
+    "name": "", // name of the user-assigned Managed Identity or the Service Principal for setting up OpenID connect
+    "repositoryName": "", // the name of the repository with the organization i.e. org/repo-name (must be a GitHub repository)
+    "resourceGroup": {
+        "name": "", // name of the resource group. The script will create one if it does not exists
+        "location": "", // location of the resource group in Azure cloud
+        "tags": [
+            {
+                "Key": "Value"
+            },
+            {
+                "Key": "Value"
+            }
+        ] // tags for the resource group 
+    }
+}
