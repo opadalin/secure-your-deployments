@@ -1,0 +1,54 @@
+name: Deploy to Azure
+run-name: ${{ github.event.head_commit.message }}
+
+# concurrency keyword will prevent having multiple concurrent runs of your workflow
+concurrency: secure-your-deployments
+
+env:
+  TEMPLATE_FILE_PATH: ./Deployment/main.bicep
+
+permissions:
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/*'
+  pull_request:
+    branches:
+      - main
+      - 'feature/*'
+
+jobs:
+
+  Deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run Azure Login with OpenID Connect
+        uses: azure/login@v1
+        with:
+          # ClientId of the Azure Service principal created.
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          # TenantId of the Azure Service principal created.
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          # Azure subscriptionId
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy Azure resources
+        uses: azure/arm-deploy@v1
+        id: azure-resources
+        with:
+          # Provide the name of a resource group, only required for resource Group deployments.
+          resourceGroupName: ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
+          # Specify the path or URL to the Azure Resource Manager template.
+          template: ${{ env.TEMPLATE_FILE_PATH }}
+          # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
+          scope: resourcegroup
+
+      
