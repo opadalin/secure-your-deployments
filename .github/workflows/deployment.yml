@@ -13,6 +13,10 @@ permissions:
 
 on:
   push:
+    paths-ignore:
+      - 'GitHubOpenIdConnect/**'
+      - '.gitignore'
+      - '*.md'
     branches:
       - main
       - 'feature/*'
